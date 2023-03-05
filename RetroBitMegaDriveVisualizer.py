@@ -50,7 +50,6 @@ def button_up(name):
 
 while keep_playing:
     for event in pygame.event.get():
-        print(event)
         if event.type == pygame.QUIT:
             pygame.display.quit()
             pygame.quit()
