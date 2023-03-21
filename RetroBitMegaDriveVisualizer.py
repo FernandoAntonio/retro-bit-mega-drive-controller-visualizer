@@ -16,13 +16,12 @@ keep_playing = True
 pressed = False
 
 #Setting icon and title
-icon = pygame.image.load(os.getcwd() + "\\images\\icon.png")
+icon = pygame.image.load(os.path.join(os.getcwd(), "images", "icon.png"))
 pygame.display.set_icon(icon)
 pygame.display.set_caption("Retro-Bit Mega Drive Controller")
 
 #Setting up main window
 screen = pygame.display.set_mode((800, 600))
-bg = pygame.image.load(os.getcwd() + "\\images\\background.png").convert_alpha()
 main_display = pygame.display.set_mode(bg.get_size())
 main_display.blit(bg, (0,0))
 pygame.display.flip()
@@ -35,7 +34,7 @@ for i in range(0, pygame.joystick.get_count()):
 def draw_pressed_buttons():
     main_display.blit(bg, (0,0))
     for held_button in held_buttons:
-        main_display.blit(pygame.image.load(os.getcwd() + "\\images\\"+held_button+".png").convert_alpha(), (0,0))
+        main_display.blit(pygame.image.load(os.path.join(os.getcwd(), "images", held_button + ".png")).convert_alpha(), (0,0))
     pygame.display.flip()
     
 def button_down(name):
