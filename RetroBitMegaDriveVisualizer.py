@@ -6,6 +6,9 @@ os.environ["SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS"] = "1"
 
 import pygame
 
+WINDOW_WIDTH = 400
+WINDOW_HEIGHT = 213
+
 #Starting
 pygame.init()
 joysticks = []
@@ -21,7 +24,8 @@ pygame.display.set_icon(icon)
 pygame.display.set_caption("Retro-Bit Mega Drive Controller")
 
 #Setting up main window
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.NOFRAME)
+bg = pygame.image.load(os.path.join(os.getcwd(), "images", "background.png")).convert_alpha()
 main_display = pygame.display.set_mode(bg.get_size())
 main_display.blit(bg, (0,0))
 pygame.display.flip()
