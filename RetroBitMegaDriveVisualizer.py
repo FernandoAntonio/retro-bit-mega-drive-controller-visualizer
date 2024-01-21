@@ -48,11 +48,6 @@ main_display.fill((255, 0, 128))
 main_display.blit(bg, (0, 0))
 pygame.display.flip()
 
-# For all the connected joysticks
-for i in range(0, pygame.joystick.get_count()):
-    joysticks.append(pygame.joystick.Joystick(i))
-    joysticks[-1].init()
-
 
 def draw_pressed_buttons():
     main_display.blit(bg, (0, 0))
@@ -87,6 +82,12 @@ def switch_theme(theme):
 
 while keep_playing:
     for event in pygame.event.get():
+        # Check for connected joysticks
+        if event.type == pygame.JOYDEVICEADDED:
+            for i in range(0, pygame.joystick.get_count()):
+                joysticks.append(pygame.joystick.Joystick(i))
+                joysticks[-1].init()
+
         if event.type == pygame.QUIT:
             pygame.display.quit()
             pygame.quit()
