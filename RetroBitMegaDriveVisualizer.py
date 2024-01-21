@@ -6,6 +6,7 @@ os.environ["SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS"] = "1"
 
 import platform
 import pygame
+import sys
 
 # Starting
 pygame.init()
@@ -15,10 +16,13 @@ clock = pygame.time.Clock()
 clock.tick(60)
 keep_playing = True
 pressed = False
-theme = "overlay_grey" # "overlay_subtle" # "overlay_white"
+themes = ["overlay_grey", "overlay_subtle", "overlay_white"]
+theme = themes[0]
+root_dir = getattr(sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__)))
+images_dir = os.path.join(root_dir, "images")
 
 # Setting icon and title
-icon = pygame.image.load(os.path.join(os.getcwd(), "images", "icon.png"))
+icon = pygame.image.load(os.path.join(images_dir, "icon.png"))
 pygame.display.set_icon(icon)
 pygame.display.set_caption("Retro-Bit Mega Drive Controller")
 
@@ -38,7 +42,7 @@ if platform.system() == "Windows":
         hwnd, win32api.RGB(*(255, 0, 128)), 0, win32con.LWA_COLORKEY
     )
 
-bg = pygame.image.load(os.path.join(os.getcwd(), "images", "background.png"))
+bg = pygame.image.load(os.path.join(images_dir, "background.png"))
 main_display = pygame.display.set_mode(bg.get_size())
 main_display.fill((255, 0, 128))
 main_display.blit(bg, (0, 0))
@@ -55,7 +59,7 @@ def draw_pressed_buttons():
     for held_button in held_buttons:
         main_display.blit(
             pygame.image.load(
-                os.path.join(os.getcwd(), "images", theme, held_button + ".png")
+                os.path.join(images_dir, theme, held_button + ".png")
             ).convert_alpha(),
             (0, 0),
         )
@@ -74,6 +78,13 @@ def button_up(name):
     draw_pressed_buttons()
 
 
+def switch_theme(theme):
+    if theme == themes[-1]:
+        return themes[0]
+    else:
+        return themes[themes.index(theme) + 1]
+
+
 while keep_playing:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -81,7 +92,10 @@ while keep_playing:
             pygame.quit()
             keep_playing = False
 
-        if platform.system() == "Darwin":
+        if event.type == pygame.MOUSEBUTTONUP:
+            theme = switch_theme(theme)
+
+        elif platform.system() == "Darwin":
             if event.type == pygame.KEYUP and event.key == 27:
                 pygame.display.quit()
                 pygame.quit()
